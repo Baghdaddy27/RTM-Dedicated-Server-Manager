@@ -19,7 +19,7 @@ REM Wait a few seconds for the server to start (adjust as necessary)
 timeout /t 5 /nobreak >nul
 
 REM Set your Discord webhook URL (update it with your actual webhook URL)
-set "discordWebhookUrl=https://discord.com/api/webhooks/1346282089724510349/Vlns3b0OmVMctrLHpvm1y3tPVzDrfODnjKeZcwXjScuUPO45xvC0kqRilYq5TInCL8-P"
+set "discordWebhookUrl=PUT URL HER"
 set "message=Return to Moria server has started."
 
 REM Send the Discord notification using curl
