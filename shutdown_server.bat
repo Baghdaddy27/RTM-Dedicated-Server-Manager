@@ -15,7 +15,7 @@ echo [%date% %time%] Checking running processes... >> "C:\Scripts\ServerUpdateLo
 tasklist /FI "IMAGENAME eq MoriaServer-Win64-Shipping.exe" >> "C:\Scripts\ServerUpdateLog.txt" 2>&1
 
 REM Set your Discord webhook URL (update it below)
-set "discordWebhookUrl=https://discord.com/api/webhooks/1346282089724510349/Vlns3b0OmVMctrLHpvm1y3tPVzDrfODnjKeZcwXjScuUPO45xvC0kqRilYq5TInCL8-P"
+set "discordWebhookUrl=PUT URL HERE"
 set "message=Return to Moria has been shut down."
 
 REM Send the Discord notification using curl
