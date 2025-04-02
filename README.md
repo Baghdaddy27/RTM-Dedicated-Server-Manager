@@ -3,7 +3,7 @@ Version 1.0
 Last Updated: March 2025
 
 ==========================================
-📌 INTRODUCTION
+INTRODUCTION
 ==========================================
 The Return to Moria Server Manager (RTM Server Manager) is a standalone tool 
 designed to simplify the setup and management of a dedicated Return to Moria server.
@@ -12,7 +12,7 @@ This application automatically sets up SteamCMD, installs the dedicated server,
 and provides a graphical user interface (GUI) to manage server settings.
 
 ==========================================
-⚡ FEATURES
+FEATURES
 ==========================================
 - **Automatic Setup** - Extracts SteamCMD, installs the dedicated server, and applies default settings.
 - **Graphical Interface** - No command-line needed; everything is handled via an easy-to-use UI.
@@ -25,7 +25,7 @@ and provides a graphical user interface (GUI) to manage server settings.
 - **Log Viewer** - Keep track of server status, errors, and commands.
 
 ==========================================
-📥 INSTALLATION & FIRST-TIME SETUP
+INSTALLATION & FIRST-TIME SETUP
 ==========================================
 1. **Extract the Folder**
    Once downloaded, extract the `RTM Server Manager` folder anywhere on your system.
@@ -45,7 +45,7 @@ This is because it is:
 Once completed, the application will launch automatically.
 
 ==========================================
-🚀 USING THE APPLICATION
+USING THE APPLICATION
 ==========================================
 When you launch **RTM Server Manager**, you'll see the following tabs:
 
@@ -56,7 +56,7 @@ When you launch **RTM Server Manager**, you'll see the following tabs:
 5. **Notifications** - Configure Discord & desktop alerts for server events.
 
 ==========================================
-🎮 STARTING THE SERVER
+STARTING THE SERVER
 ==========================================
 1. Click **Start Server** - This will check for updates and launch the server.
 2. The **terminal will display logs** as the server initializes.
@@ -65,7 +65,7 @@ When you launch **RTM Server Manager**, you'll see the following tabs:
 If the server crashes, **the manager will detect it and notify you**.
 
 ==========================================
-📅 SETTING UP AUTO RESTARTS
+SETTING UP AUTO RESTARTS
 ==========================================
 To keep your server running smoothly, you can schedule automatic restarts:
 1. Go to **Terminal Tab → Auto Restart**
@@ -78,7 +78,7 @@ To keep your server running smoothly, you can schedule automatic restarts:
 The app will automatically restart the server based on your settings.
 
 ==========================================
-🔔 ENABLING NOTIFICATIONS
+ENABLING NOTIFICATIONS
 ==========================================
 1. Go to **Notifications Tab**
 2. Enter a **Discord Webhook URL** (if using Discord alerts)
@@ -92,12 +92,12 @@ The app will automatically restart the server based on your settings.
 🛠 TROUBLESHOOTING
 ==========================================
 
-🚫 **The app doesn’t start or closes immediately**
+**The app doesn’t start or closes immediately**
 - Run `RTM_Server_Manager.exe` **as Administrator**.
 - Make sure your **antivirus is not blocking it**.
 - If `settings.json` is missing, **reinstall the application**.
 
-📂 **The server doesn’t install or update**
+**The server doesn’t install or update**
 - Check your **internet connection**.
 - Make sure `steamcmd.zip` is inside the `RTM Server Manager` folder.
 - If SteamCMD fails, **delete the `steamcmd/` folder** and restart the app.
@@ -106,15 +106,3 @@ The app will automatically restart the server based on your settings.
 - Ensure `settings.json` is in the correct directory.
 - Make sure you **click "Save Configuration"** after making changes.
 
-==========================================
-📦 DISTRIBUTING TO OTHERS
-==========================================
-Once everything is set up, you can **zip the `RTM Server Manager/` folder** and share it with others.
-They only need to **extract and run `RTM_Server_Manager.exe`**, and the app will do the rest!
-
-==========================================
-❓ NEED HELP?
-==========================================
-📨 Contact support at: https://discord.gg/KRG  
-
-🚀 **Enjoy your Return to Moria Dedicated Server!**
