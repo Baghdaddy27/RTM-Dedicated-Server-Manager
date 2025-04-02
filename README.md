@@ -2,7 +2,6 @@ Return to Moria Server Manager (RTM Server Manager)
 Version 1.0
 Last Updated: March 2025
 
-==========================================
 INTRODUCTION
 ==========================================
 The Return to Moria Server Manager (RTM Server Manager) is a standalone tool 
@@ -11,7 +10,6 @@ designed to simplify the setup and management of a dedicated Return to Moria ser
 This application automatically sets up SteamCMD, installs the dedicated server, 
 and provides a graphical user interface (GUI) to manage server settings.
 
-==========================================
 FEATURES
 ==========================================
 - **Automatic Setup** - Extracts SteamCMD, installs the dedicated server, and applies default settings.
@@ -24,7 +22,6 @@ FEATURES
 - **SteamCMD Handling** - Automatically updates the dedicated server before every launch.
 - **Log Viewer** - Keep track of server status, errors, and commands.
 
-==========================================
 INSTALLATION & FIRST-TIME SETUP
 ==========================================
 1. **Extract the Folder**
@@ -44,7 +41,6 @@ This is because it is:
 **This process can take between 2-10 minutes** depending on your internet speed.
 Once completed, the application will launch automatically.
 
-==========================================
 USING THE APPLICATION
 ==========================================
 When you launch **RTM Server Manager**, you'll see the following tabs:
@@ -55,7 +51,6 @@ When you launch **RTM Server Manager**, you'll see the following tabs:
 4. **Terminal** - Start/stop the server, send commands, and view real-time logs.
 5. **Notifications** - Configure Discord & desktop alerts for server events.
 
-==========================================
 STARTING THE SERVER
 ==========================================
 1. Click **Start Server** - This will check for updates and launch the server.
@@ -64,7 +59,6 @@ STARTING THE SERVER
 
 If the server crashes, **the manager will detect it and notify you**.
 
-==========================================
 SETTING UP AUTO RESTARTS
 ==========================================
 To keep your server running smoothly, you can schedule automatic restarts:
@@ -77,7 +71,6 @@ To keep your server running smoothly, you can schedule automatic restarts:
 
 The app will automatically restart the server based on your settings.
 
-==========================================
 ENABLING NOTIFICATIONS
 ==========================================
 1. Go to **Notifications Tab**
@@ -88,7 +81,6 @@ ENABLING NOTIFICATIONS
 - Crash Detection Alerts
 4. Click **Test Notifications** to verify settings.
 
-==========================================
 🛠 TROUBLESHOOTING
 ==========================================
 
