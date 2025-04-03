@@ -1,0 +1,10 @@
+{
+    "rtm_server_path": "/home/jordan/Downloads/RTMTest",
+    "webhook_url": "https://discord.com/api/webhooks/1346282089724510349/Vlns3b0OmVMctrLHpvm1y3tPVzDrfODnjKeZcwXjScuUPO45xvC0kqRilYq5TInCL8-P",
+    "restart_schedule": {
+        "enabled": true,
+        "warnings": true,
+        "frequency": 4,
+        "start_time": "00:00"
+    }
+}

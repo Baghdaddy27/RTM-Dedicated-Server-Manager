@@ -1,0 +1,24 @@
+Welcome to the Return to Moria Server Manager! Version 1.0.
+
+Setup Instructions:
+1. If not done already, Verify SteamCMD. This will unpack, install, and update the latest version of SteamCMD which is required to run the server.
+2. Verify your Return to Moria Server Files. This will have you select the location of your existing server, or where you want to install it! It will download, update, and verify all dedicated server files.
+3. Edit your Config, Permissions, and Rules!
+
+If you have any questions, comments, or concerns, please post them on my github at:
+https://github.com/Baghdaddy27/RTM-Dedicated-Server-Manager/discussions/1
+
+Future updates will be available on the same github Repository.
+
+_____________________________________________________
+
+TERMINAL START
+
+start	Start the Moria server
+stop	Stop the server gracefully
+status	Check if the server is running
+restart	Restart the server (stop, wait, then start)
+notify test	Send a test desktop/webhook notification
+set webhook <url>	Save a new Discord webhook to settings.json
+
+_____________________________________________________
