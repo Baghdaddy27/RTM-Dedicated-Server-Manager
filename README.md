@@ -1,100 +1,156 @@
-Return to Moria Server Manager (RTM Server Manager)
-Version 1.0
-Last Updated: March 2025
+# Return to Moria Server Manager (RTM Server Manager)
 
-INTRODUCTION
-==========================================
-The Return to Moria Server Manager (RTM Server Manager) is a standalone tool 
-designed to simplify the setup and management of a dedicated Return to Moria server.
+**Version:** 1.0  
+**Last Updated:** March 2025
 
-This application automatically sets up SteamCMD, installs the dedicated server, 
-and provides a graphical user interface (GUI) to manage server settings.
+---
 
-FEATURES
-==========================================
-- **Automatic Setup** - Extracts SteamCMD, installs the dedicated server, and applies default settings.
-- **Graphical Interface** - No command-line needed; everything is handled via an easy-to-use UI.
-- **Configuration Management** - Edit server settings through the app with tooltips explaining each option.
-- **Live Terminal** - Start, stop, and send commands to the server from the GUI.
-- **Auto Restart Scheduling** - Set hourly, daily, or weekly server restarts.
-- **Notification System** - Enable **Discord webhooks** and **desktop notifications** for server events.
-- **Crash Detection** - The app can detect when the server crashes and notify you.
-- **SteamCMD Handling** - Automatically updates the dedicated server before every launch.
-- **Log Viewer** - Keep track of server status, errors, and commands.
+## INTRODUCTION
 
-INSTALLATION & FIRST-TIME SETUP
-==========================================
-1. **Extract the Folder**
-   Once downloaded, extract the `RTM Server Manager` folder anywhere on your system.
+The **Return to Moria Server Manager** is a standalone tool designed to simplify the setup and management of a dedicated Return to Moria server.
 
-   Important files inside:
-RTM Server Manager/ ├── RTM_Server_Manager.exe # The executable ├── Default Files/ # Default server configuration files ├── steamcmd.zip # SteamCMD (extracted on first run) ├── settings.json # Stores user settings ├── RTMSM.ico # Application icon ├── logs/ # Server logs (once running)
+This application automatically sets up SteamCMD, installs the dedicated server, and provides a modern **graphical user interface (GUI)** to manage configuration, restarts, notifications, and more.
 
+---
 
-2. **Running for the First Time**
-The first time you run `RTM_Server_Manager.exe`, **it may appear to do nothing for several minutes**.
-This is because it is:
-- Extracting **SteamCMD**
-- Downloading & Installing **the Dedicated Server**
-- Copying **Default Configuration Files**
+## FEATURES
 
-**This process can take between 2-10 minutes** depending on your internet speed.
-Once completed, the application will launch automatically.
+- **Automatic Setup** – Extracts SteamCMD, installs the server, and applies default settings.  
+- **GUI-Based Management** – No command line needed. Configure and manage everything through an intuitive interface.  
+- **Configuration Editing** – Modify server config, permissions, and rules with tooltips and field validation.  
+- **Integrated Terminal** – Start, stop, and send commands directly to the server from the built-in terminal.  
+- **Auto Restart Scheduler** – Set scheduled restarts every 1–4 hours with optional pre-warning notifications.  
+- **Notification System** – Enable Discord webhooks and desktop toasts for server start/stop/crash events.  
+- **Crash Detection** – Detects server crashes and alerts you via your selected notification methods.  
+- **SteamCMD Auto-Update** – Ensures the dedicated server is always up to date.  
+- **Log Viewer** – Tracks server events, command output, and warnings in real time.
 
-USING THE APPLICATION
-==========================================
-When you launch **RTM Server Manager**, you'll see the following tabs:
+---
 
-1. **Configuration** - Edit server settings via GUI.
-2. **Permissions** - Manage user/admin permissions.
-3. **Rules** - Set server rules and display messages.
-4. **Terminal** - Start/stop the server, send commands, and view real-time logs.
-5. **Notifications** - Configure Discord & desktop alerts for server events.
+## INSTALLATION & FIRST-TIME SETUP
 
-STARTING THE SERVER
-==========================================
-1. Click **Start Server** - This will check for updates and launch the server.
-2. The **terminal will display logs** as the server initializes.
-3. Once fully started, **players can connect**.
+### 1. Extract the Folder
 
-If the server crashes, **the manager will detect it and notify you**.
+Download and extract the **RTM Server Manager** folder anywhere on your system.  
+The folder should contain:
 
-SETTING UP AUTO RESTARTS
-==========================================
-To keep your server running smoothly, you can schedule automatic restarts:
-1. Go to **Terminal Tab → Auto Restart**
-2. Choose one of the following:
-- **Hourly** – Restart every X hours.
-- **Daily** – Restart at a set time.
-- **Weekly** – Restart on a specific day & time.
-3. Click **Save Restart Schedule**
+```
+RTM Server Manager/
+├── main.exe                  # The executable
+├── steamcmd.zip              # SteamCMD (auto-extracted on first run)
+├── settings.json             # Stores saved paths and notification settings
+├── .wm                       # (Optional) Welcome message, hidden file
+├── assets/
+│   └── RTMSM.png             # App branding image
+├── Default Files/
+│   ├── MoriaServerConfig.ini
+│   ├── MoriaServerPermissions.txt
+│   └── MoriaServerRules.txt
+├── logs/                     # Populated automatically during runtime
+```
 
-The app will automatically restart the server based on your settings.
+---
 
-ENABLING NOTIFICATIONS
-==========================================
-1. Go to **Notifications Tab**
-2. Enter a **Discord Webhook URL** (if using Discord alerts)
-3. Enable/Disable:
-- Server Start Alerts
-- Server Stop Alerts
-- Crash Detection Alerts
-4. Click **Test Notifications** to verify settings.
+### 2. First Launch
 
-🛠 TROUBLESHOOTING
-==========================================
+Double-click `main.exe`. It may appear to “hang” for several minutes the first time — this is normal. It is:
 
-**The app doesn’t start or closes immediately**
-- Run `RTM_Server_Manager.exe` **as Administrator**.
-- Make sure your **antivirus is not blocking it**.
-- If `settings.json` is missing, **reinstall the application**.
+- Extracting SteamCMD
+- Downloading and installing the Return to Moria Dedicated Server
+- Setting up default config files
 
-**The server doesn’t install or update**
-- Check your **internet connection**.
-- Make sure `steamcmd.zip` is inside the `RTM Server Manager` folder.
-- If SteamCMD fails, **delete the `steamcmd/` folder** and restart the app.
+This process can take 2–10 minutes depending on your internet speed.  
+Once setup is complete, the application will launch automatically.
 
-⚠ **My settings don’t save!**
-- Ensure `settings.json` is in the correct directory.
-- Make sure you **click "Save Configuration"** after making changes.
+---
 
+## USING THE APPLICATION
+
+When you launch RTM Server Manager, the main panel is split into sections:
+
+### Setup Section
+
+- **Verify SteamCMD** – Installs or extracts SteamCMD.
+- **Verify RTM Files** – Installs or updates the server files.
+- **Setup Notifications** – Opens a dialog to configure Discord/webhook and desktop notifications.
+
+### Server Control Section
+
+- **Start Server** – Updates and launches the server.
+- **Stop Server** – Sends a graceful shutdown command.
+- **Auto Restart** – Opens the restart scheduling window.
+
+### Server Settings Section
+
+- **Edit Config** – Modify `MoriaServerConfig.ini`
+- **Edit Permissions** – Modify `MoriaServerPermissions.txt`
+- **Edit Rules** – Modify `MoriaServerRules.txt`
+
+---
+
+## STARTING THE SERVER
+
+1. Click **Start Server**  
+2. The terminal pane will begin logging as the server boots  
+3. Once it finishes loading, players can connect via direct IP  
+
+If the server crashes, the app will notify you (if notifications are enabled).
+
+---
+
+## SETTING UP AUTO RESTARTS
+
+1. Click **Auto Restart**  
+2. Configure:
+   - Frequency (1–4 hours)
+   - Start Time (HH:MM)
+   - Enable Restart Warnings
+3. Click **Save**  
+The app will run a background watchdog that gracefully restarts the server at the scheduled time.
+
+---
+
+## ENABLING NOTIFICATIONS
+
+1. Click **Setup Notifications**  
+2. Choose:
+   - Enable/Disable Desktop Notifications
+   - Enable/Disable Discord Webhook Notifications
+3. Enter your Discord Webhook URL  
+4. Click **Test Notification** to verify everything works  
+
+You’ll be notified on:
+- Server Start
+- Server Stop
+- Crash Detection
+- Scheduled Restarts (if enabled)
+
+---
+
+## TROUBLESHOOTING
+
+### The app doesn’t start or closes immediately
+
+- Run as Administrator
+- Make sure your antivirus isn’t blocking it
+- If `settings.json` is missing or corrupted, delete it and re-launch
+
+### The server won’t install/update
+
+- Confirm `steamcmd.zip` is in the same folder as `main.exe`
+- Check internet access
+- Delete the `steamcmd/` folder and re-run **Verify SteamCMD**
+
+### My settings aren’t saving
+
+- Make sure `settings.json` is present in the same folder as `main.exe`
+- Always click **Save Configuration** after making changes
+
+---
+
+## FEEDBACK & UPDATES
+
+Have feedback, questions, or ideas? Post them on the official GitHub:
+
+- [GitHub Discussions](https://github.com/Baghdaddy27/RTM-Dedicated-Server-Manager/discussions/1)  
+- [GitHub Releases](https://github.com/Baghdaddy27/RTM-Dedicated-Server-Manager/releases)
