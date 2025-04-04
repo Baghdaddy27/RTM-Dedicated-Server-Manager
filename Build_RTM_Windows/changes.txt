@@ -1,0 +1,30 @@
+List of Changes - Version Description
+
+1.0.0
+^ ^ ^
+| | |
+| | Minor Update
+| Major Update
+System Update
+
+
+Update from Version 1.0 to 1.0.1 (Windows)
+
+ERRORS:
+  - Corrected an error where text would only partially appear.
+  - Corrected an error where SteamCMD would indicate it was unpacked correctly, but not function.
+  - Corrected an error where RTM Files would change directory. 
+  - Corrected errors where notifications would not display on desktop and / or webhooks. 
+  - Reformatted the settings.json to store data correctly. 
+  - Corrected an issue where the logo was being cut off. 
+
+FEATURES:
+  - Updated Auto Restart options to offer Hourly Restarts from 1 to 24 hours based on the last save time of the settings. 
+  - Updated Auto Restart to offer a designated time option to restart the server once daily at the users input time (24 hour format).
+  - Added additional terminal commands:  
+    - update: Checks for application updates (Not RTM server updates)
+    - monitor on / off: Turns the performance monitor off and on.
+    - help: display all current text commands and the welcome message. 
+  - Application now checks github for new versions of the server manager and displays a message to the user. 
+  - Implimented a server monitor which displays the PID | CPU Usage | MEM Usage once every 30 seconds when enabled. 
+  - Updated the README.md
