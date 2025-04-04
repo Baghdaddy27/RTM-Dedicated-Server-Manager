@@ -4,12 +4,12 @@ import json
 from PyQt5.QtWidgets import (
     QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout,
     QPushButton, QLabel, QTextEdit, QLineEdit, QSizePolicy, QFrame,
-    QDialog, QFormLayout, QTimeEdit, QCheckBox, QComboBox
+    QDialog, QFormLayout, QTimeEdit, QCheckBox, QComboBox, QButtonGroup
 )
-from PyQt5.QtGui import QIcon, QPixmap
-from PyQt5.QtCore import Qt, QTime
-
-from modules import setup, server_control, server_settings, notifications, restart_scheduler, command_parser, welcome
+from PyQt5.QtGui import QIcon, QPixmap, QFont
+from PyQt5.QtCore import Qt, QTime, pyqtSignal
+from datetime import datetime
+from modules import setup, server_control, server_settings, notifications, restart_scheduler, command_parser, welcome, performance_monitor
 
 # --- Path Handling for Windows Executable ---
 if getattr(sys, 'frozen', False):
@@ -19,7 +19,7 @@ else:
 
 WELCOME_PATH = os.path.join(BASE_DIR, ".wm")
 
-SETTINGS_PATH = os.path.join(BASE_DIR, "settings.json")
+SETTINGS_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "settings.json"))
 
 # Ensure directory exists
 os.makedirs(BASE_DIR, exist_ok=True)
@@ -29,7 +29,7 @@ default_settings = {
     "rtm_server_path": "",
     "webhook_url": "",
     "enable_webhook": False,
-    "enable_desktop": False,
+    "enable_desktop_notifications": False,
     "notify_server_start": True,
     "notify_server_stop": True,
     "notify_crash_detect": True,
@@ -78,7 +78,7 @@ class MainWindow(QMainWindow):
 
         logo_label = QLabel()
         if os.path.exists(LOGO_PATH):
-            pixmap = QPixmap(LOGO_PATH).scaled(128, 128, Qt.KeepAspectRatio, Qt.SmoothTransformation)
+            pixmap = QPixmap(LOGO_PATH).scaled(96, 96, Qt.KeepAspectRatio, Qt.SmoothTransformation)
             logo_label.setPixmap(pixmap)
         logo_label.setAlignment(Qt.AlignCenter)
 
@@ -86,7 +86,7 @@ class MainWindow(QMainWindow):
         title_label.setAlignment(Qt.AlignCenter)
         title_label.setWordWrap(True)
 
-        author_label = QLabel("<small><i>Made by Baghdaddy27</i></small>")
+        author_label = QLabel("<small><i>Version 1.0.1</i></small>")
         author_label.setAlignment(Qt.AlignCenter)
 
         logo_container.addWidget(logo_label)
@@ -153,12 +153,15 @@ class MainWindow(QMainWindow):
         main_layout.addWidget(self.terminal, 2)
 
 class TerminalWidget(QWidget):
+    append_text_signal = pyqtSignal(str)
     def __init__(self):
         super().__init__()
         layout = QVBoxLayout()
-
+        self.append_text_signal.connect(self._append_text)
         self.output_area = QTextEdit()
         self.output_area.setReadOnly(True)
+        self.output_area.setFont(QFont("Courier New", 10))
+
 
         self.input_line = QLineEdit()
         self.input_line.setPlaceholderText("Enter command here...")
@@ -178,9 +181,8 @@ class TerminalWidget(QWidget):
             self.log(f"❌ Failed to load welcome message: {e}")
 
     def log(self, message):
-        self.output_area.append(message)
-        self.output_area.moveCursor(self.output_area.textCursor().End)
-        self.output_area.ensureCursorVisible()
+        timestamp = datetime.now().strftime("[%H:%M:%S]")
+        self.append_text_signal.emit(f"{timestamp} {message}")
 
     def send_command(self):
         cmd = self.input_line.text().strip()
@@ -188,6 +190,11 @@ class TerminalWidget(QWidget):
             self.log(f"> {cmd}")
             command_parser.handle_command(cmd, self.log)
         self.input_line.clear()
+
+    def _append_text(self, message):
+        self.output_area.append(message)
+        self.output_area.moveCursor(self.output_area.textCursor().End)
+        self.output_area.ensureCursorVisible()
 
 class NotificationSetupDialog(QDialog):
     def __init__(self, log_callback):
@@ -251,20 +258,44 @@ class RestartSchedulerDialog(QDialog):
         self.log = log_callback
 
         layout = QVBoxLayout()
-        self.enable_box = QCheckBox("Enable Automatic Restarts")
-        self.warning_box = QCheckBox("Enable Restart Warnings")
+
+        # Mode selection
+        self.hourly_check = QCheckBox("Hourly Restart")
+        self.designated_check = QCheckBox("Designated Time Restart")
+
+        self.mode_group = QButtonGroup(self)
+        self.mode_group.setExclusive(True)
+        self.mode_group.addButton(self.hourly_check)
+        self.mode_group.addButton(self.designated_check)
+
+        self.hourly_check.clicked.connect(self.toggle_mode)
+        self.designated_check.clicked.connect(self.toggle_mode)
+
+        layout.addWidget(self.hourly_check)
+        layout.addWidget(self.designated_check)
+
+        # Hourly config
         self.freq_dropdown = QComboBox()
-        self.freq_dropdown.addItems(["1", "2", "3", "4"])
+        self.freq_dropdown.addItems([str(i) for i in range(1, 25)])
+        self.freq_dropdown.setEnabled(False)
+
+        # Designated time config
         self.time_picker = QTimeEdit()
         self.time_picker.setDisplayFormat("HH:mm")
+        self.time_picker.setEnabled(False)
 
-        layout.addWidget(QLabel("Restart Frequency (Hours):"))
+        layout.addWidget(QLabel("Restart Frequency (1–24 hrs):"))
         layout.addWidget(self.freq_dropdown)
-        layout.addWidget(QLabel("Starting Time (HH:MM):"))
+        layout.addWidget(QLabel("Restart at specific 24H time (HH:MM):"))
         layout.addWidget(self.time_picker)
+
+        # Common options
+        self.enable_box = QCheckBox("Enable Automatic Restarts")
+        self.warning_box = QCheckBox("Enable Restart Warnings")
         layout.addWidget(self.enable_box)
         layout.addWidget(self.warning_box)
 
+        # Save
         save_btn = QPushButton("Save")
         save_btn.clicked.connect(self.save_settings)
         layout.addWidget(save_btn)
@@ -272,22 +303,44 @@ class RestartSchedulerDialog(QDialog):
         self.setLayout(layout)
         self.load_settings()
 
+    def toggle_mode(self):
+        if self.hourly_check.isChecked():
+            self.freq_dropdown.setEnabled(True)
+            self.time_picker.setEnabled(False)
+        elif self.designated_check.isChecked():
+            self.freq_dropdown.setEnabled(False)
+            self.time_picker.setEnabled(True)
+
     def load_settings(self):
         settings = restart_scheduler.load_restart_settings()
+        mode = settings.get("mode", "hourly")
+
         self.enable_box.setChecked(settings.get("enabled", False))
         self.warning_box.setChecked(settings.get("warnings", False))
-        self.freq_dropdown.setCurrentText(str(settings.get("frequency", "1")))
+
+        self.freq_dropdown.setCurrentText(str(settings.get("frequency", 1)))
         self.time_picker.setTime(QTime.fromString(settings.get("start_time", "00:00"), "HH:mm"))
 
+        if mode == "hourly":
+            self.hourly_check.setChecked(True)
+        elif mode == "designated":
+            self.designated_check.setChecked(True)
+        self.toggle_mode()
+
     def save_settings(self):
+        mode = "hourly" if self.hourly_check.isChecked() else "designated"
+        now_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         data = {
             "enabled": self.enable_box.isChecked(),
             "warnings": self.warning_box.isChecked(),
-            "frequency": int(self.freq_dropdown.currentText()),
-            "start_time": self.time_picker.time().toString("HH:mm")
+            "mode": mode,
+            "frequency": int(self.freq_dropdown.currentText()) if mode == "hourly" else 1,
+            "start_time": self.time_picker.time().toString("HH:mm"),
+            "last_start": now_str if mode == "hourly" else None
         }
+
         restart_scheduler.save_restart_settings(data)
-        self.log(f"✅ Restart schedule saved: every {data['frequency']} hrs starting at {data['start_time']}")
+        self.log(f"✅ Restart schedule saved in {mode} mode.")
         self.accept()
 
 if __name__ == "__main__":
@@ -295,5 +348,8 @@ if __name__ == "__main__":
     app = QApplication(sys.argv)
     window = MainWindow()
     window.show()
+    performance_monitor.start_monitoring(window.terminal.log)
     restart_scheduler.start_watchdog(window.terminal.log)
+    from modules.version_checker import check_for_update_gui
+    check_for_update_gui(window)
     sys.exit(app.exec_())

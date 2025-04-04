@@ -12,7 +12,7 @@ if getattr(sys, 'frozen', False):
 else:
     BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
-SETTINGS_PATH = os.path.join(BASE_DIR, "settings.json")
+SETTINGS_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "settings.json"))
 DEFAULT_FILES_DIR = os.path.join(BASE_DIR, "Default Files")
 
 def _get_rtm_path(log):

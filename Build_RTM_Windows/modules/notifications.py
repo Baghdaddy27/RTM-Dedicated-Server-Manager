@@ -11,7 +11,7 @@ if getattr(sys, 'frozen', False):
 else:
     BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
-SETTINGS_PATH = os.path.join(BASE_DIR, "settings.json")
+SETTINGS_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "settings.json"))
 
 def _load_settings():
     if os.path.exists(SETTINGS_PATH):
@@ -33,9 +33,15 @@ def get_webhook_url():
     return _load_settings().get("webhook_url", "")
 
 def enable_desktop_notifications(log):
+    settings = _load_settings()
+    settings["enable_desktop_notifications"] = True
+    _save_settings(settings)
     log("✅ Desktop Notifications Enabled.")
 
 def disable_desktop_notifications(log):
+    settings = _load_settings()
+    settings["enable_desktop_notifications"] = False
+    _save_settings(settings)
     log("❌ Desktop Notifications Disabled.")
 
 def test_desktop_notification(log):
@@ -51,9 +57,15 @@ def test_desktop_notification(log):
         log("🛑 Desktop Notifications Disabled.")
 
 def enable_webhook_notifications(log):
+    settings = _load_settings()
+    settings["enable_webhook"] = True
+    _save_settings(settings)
     log("✅ Webhook Notifications Enabled.")
 
 def disable_webhook_notifications(log):
+    settings = _load_settings()
+    settings["enable_webhook"] = False
+    _save_settings(settings)
     log("❌ Webhook Notifications Disabled.")
 
 def test_webhook(log):
@@ -80,11 +92,14 @@ def send_desktop_notification(title, message):
 
 def send_webhook(message):
     settings = _load_settings()
-    if settings.get("enable_webhook") and settings.get("webhook_url"):
+    url = settings.get("webhook_url", "")
+    if settings.get("enable_webhook") and url:
         try:
-            requests.post(settings["webhook_url"], json={"content": message})
-        except Exception:
-            pass
+            response = requests.post(url, json={"content": message})
+            if response.status_code != 204:
+                log_error(f"Webhook send failed: {response.status_code} - {response.text}")
+        except Exception as e:
+            log_error(f"Webhook send exception: {e}")
 
 def send_terminal_webhook_desktop(log, terminal_msg, title, message):
     log(terminal_msg)

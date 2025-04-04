@@ -12,7 +12,7 @@ if getattr(sys, 'frozen', False):
 else:
     BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
-SETTINGS_PATH = os.path.join(BASE_DIR, "settings.json")
+SETTINGS_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "settings.json"))
 
 _restart_thread = None
 _stop_flag = False
@@ -45,14 +45,34 @@ def save_restart_settings(data):
     except Exception as e:
         log_error(f"[RestartScheduler] Failed to save restart schedule: {e}")
 
-def get_next_restart_time(start_time_str, frequency_hours):
+def get_next_restart_time(settings):
     now = datetime.now()
-    start_time = datetime.strptime(start_time_str, "%H:%M").replace(
-        year=now.year, month=now.month, day=now.day
-    )
-    while start_time < now:
-        start_time += timedelta(hours=frequency_hours)
-    return start_time
+    mode = settings.get("mode", "hourly")
+
+    if mode == "hourly":
+        last_start_str = settings.get("last_start")
+        freq_hours = int(settings.get("frequency", 1))
+        if not last_start_str:
+            return now + timedelta(hours=freq_hours)
+        last_start = datetime.strptime(last_start_str, "%Y-%m-%d %H:%M:%S")
+        while last_start <= now:
+            last_start += timedelta(hours=freq_hours)
+        return last_start
+
+    elif mode == "designated":
+        start_time_str = settings.get("start_time", "00:00")
+        try:
+            scheduled = datetime.strptime(start_time_str, "%H:%M").replace(
+                year=now.year, month=now.month, day=now.day
+            )
+            if scheduled <= now:
+                scheduled += timedelta(days=1)
+            return scheduled
+        except ValueError:
+            log_error(f"[RestartScheduler] Invalid designated time format: {start_time_str}")
+            return now + timedelta(days=1)
+
+    return now + timedelta(hours=1)  # fallback
 
 def start_watchdog(log_func):
     global _restart_thread, _stop_flag
@@ -79,26 +99,27 @@ def _watchdog_loop(log_func):
             time.sleep(10)
             continue
 
-        freq = int(settings.get("frequency", 1))
-        start_str = settings.get("start_time", "00:00")
-        warnings_enabled = settings.get("warnings", False)
-
-        next_restart = get_next_restart_time(start_str, freq)
+        next_restart = get_next_restart_time(settings)
         now = datetime.now()
         minutes_left = int((next_restart - now).total_seconds() / 60)
 
-        if warnings_enabled and minutes_left in [90, 60, 30, 10, 5] and last_warning != minutes_left:
-            msg = f"⏰ Server will restart in {minutes_left} minutes."
-            log_func(msg)
+        if settings.get("warnings", False) and minutes_left in [90, 60, 30, 10, 5] and last_warning != minutes_left:
+            msg = f"⏰ RTM Server will restart in {minutes_left} minutes."
             notifications.send_terminal_webhook_desktop(log_func, msg, "RTM Server Manager", msg)
             last_warning = minutes_left
 
         if minutes_left <= 0:
             log_func("♻️ Scheduled restart time reached. Restarting server...")
-            notifications.send_terminal_webhook_desktop(log_func, "♻️ Scheduled Restart Executing", "RTM Server Manager", "Restarting now.")
+            notifications.send_terminal_webhook_desktop(log_func, "♻️ Scheduled Restart Executing", "RTM Server Manager", "RTM Restarting now.")
             server_control.stop_server(log_func)
             time.sleep(3)
             server_control.start_server(log_func)
+
+            # update last_start if hourly
+            if settings.get("mode") == "hourly":
+                settings["last_start"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                save_restart_settings(settings)
+
             last_warning = None
             time.sleep(60)
 

@@ -27,5 +27,18 @@ def handle_command(cmd, log):
     elif cmd == "watchdog off":
         restart_scheduler.stop_watchdog()
         log("❌ Restart watchdog stopped.")
+    elif cmd == "update":
+        from modules.version_checker import check_for_update_gui
+        check_for_update_gui(parent=None, log=log)
+    elif cmd == "monitor on":
+        from modules import performance_monitor
+        performance_monitor.start_monitoring(log)
+    elif cmd == "monitor off":
+        from modules import performance_monitor
+        performance_monitor.stop_monitoring()
+        log("❌ Performance monitor stopped.")
+    elif cmd == "help":
+        from modules import welcome
+        welcome.print_welcome(log)
     else:
         log(f"❓ Unknown command: {cmd}")

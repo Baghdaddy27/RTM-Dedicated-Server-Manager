@@ -5,6 +5,7 @@ import subprocess
 import json
 import platform
 from PyQt5.QtWidgets import QFileDialog
+from PyQt5.QtCore import QTimer
 from urllib.request import urlretrieve
 
 from modules.logger import log_error
@@ -12,11 +13,11 @@ from modules.logger import log_error
 if getattr(sys, 'frozen', False):
     BASE_DIR = os.path.dirname(sys.executable)
 else:
-    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+    BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 
 STEAMCMD_ZIP = os.path.join(BASE_DIR, "steamcmd.zip")
 STEAMCMD_DIR = os.path.join(BASE_DIR, "steamcmd")
-SETTINGS_PATH = os.path.join(BASE_DIR, "settings.json")
+SETTINGS_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "settings.json"))
 IS_WINDOWS = platform.system() == "Windows"
 
 steamcmd_exe = os.path.join(
@@ -24,6 +25,7 @@ steamcmd_exe = os.path.join(
 )
 
 def verify_steamcmd(log):
+    log(f"🔍 Looking for SteamCMD at: {steamcmd_exe}")
     if not os.path.exists(steamcmd_exe):
         log("📦 SteamCMD not found. Installing...")
         os.makedirs(STEAMCMD_DIR, exist_ok=True)
@@ -68,21 +70,29 @@ def verify_rtm_files(log):
 
     if not install_dir or not os.path.isdir(install_dir):
         log("📁 No RTM server directory found. Please select or create one.")
-        selected = QFileDialog.getExistingDirectory(None, "Select RTM Server Install Directory")
-        if not selected:
-            log("❌ Operation cancelled by user.")
-            return
-        install_dir = selected
-        try:
-            with open(SETTINGS_PATH, "w") as f:
-                json.dump({"rtm_server_path": install_dir}, f, indent=4)
-            log(f"✅ Saved RTM install location to settings.json: {install_dir}")
-        except Exception as e:
-            log_error(f"[setup] Failed to save install directory to settings.json: {e}")
-            log("❌ Failed to save RTM install location.")
-            return
+        QTimer.singleShot(200, lambda: _select_rtm_path(log))
+        return
 
     log(f"🔄 Installing/updating Return to Moria server at: {install_dir}")
+    QTimer.singleShot(200, lambda: _run_steamcmd_update(log, install_dir))
+
+def _select_rtm_path(log):
+    selected = QFileDialog.getExistingDirectory(None, "Select RTM Server Install Directory")
+    if not selected:
+        log("❌ Operation cancelled by user.")
+        return
+
+    try:
+        with open(SETTINGS_PATH, "w") as f:
+            json.dump({"rtm_server_path": selected}, f, indent=4)
+        log(f"✅ Saved RTM install location to settings.json: {selected}")
+        log(f"🔄 Installing/updating Return to Moria server at: {selected}")
+        QTimer.singleShot(200, lambda: _run_steamcmd_update(log, selected))
+    except Exception as e:
+        log_error(f"[setup] Failed to save install directory to settings.json: {e}")
+        log("❌ Failed to save RTM install location.")
+
+def _run_steamcmd_update(log, install_dir):
     try:
         result = subprocess.run([
             steamcmd_exe,

@@ -1,5 +1,5 @@
 def print_welcome(log):
-    log("👋 Welcome to the Return to Moria Server Manager! Version 1.0.\n")
+    log("👋 Welcome to the Return to Moria Server Manager! By Baghdaddy27\n")
     log("🛠️  Setup Instructions:")
     log("  1. Verify SteamCMD (if not done already). This unpacks and installs the latest SteamCMD version required for the server.")
     log("  2. Verify your Return to Moria Server Files. Select an existing server folder or choose where to install.")
@@ -8,7 +8,6 @@ def print_welcome(log):
     log("💬 Questions, comments, or feedback?")
     log("  👉 Post them on GitHub Discussions:")
     log("  https://github.com/Baghdaddy27/RTM-Dedicated-Server-Manager/discussions/1\n")
-    log("🔄 Future updates will also be posted on that GitHub repository.\n")
     log("_____________________________________________________")
     log("🖥️  TERMINAL COMMANDS")
     log("start              Start the Moria server")
@@ -17,4 +16,8 @@ def print_welcome(log):
     log("restart            Restart the server (stop, wait, then start)")
     log("notify test        Send a test desktop/webhook notification")
     log("set webhook <url>  Save a new Discord webhook to settings.json")
+    log("update             Checks for RTMSM App Updates")
+    log("monitor on         Enables performance monitor")
+    log("monitor off        Disables performance monitor")
+    log("help               Prints the help page to the terminal")
     log("_____________________________________________________")
