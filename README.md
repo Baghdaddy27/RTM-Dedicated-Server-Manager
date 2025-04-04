@@ -1,6 +1,6 @@
 # Return to Moria Server Manager (RTM Server Manager)
 
-- [Download the latest application at:](https://github.com/Baghdaddy27/RTM-Dedicated-Server-Manager/releases)
+- [Click HERE to download the latest version of the application](https://github.com/Baghdaddy27/RTM-Dedicated-Server-Manager/releases)
 
 ---
 
