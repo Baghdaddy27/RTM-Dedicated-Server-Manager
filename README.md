@@ -1,7 +1,6 @@
 # Return to Moria Server Manager (RTM Server Manager)
 
-**Version:** 1.0  
-**Last Updated:** March 2025
+- [Download the latest application at:](https://github.com/Baghdaddy27/RTM-Dedicated-Server-Manager/releases)
 
 ---
 
