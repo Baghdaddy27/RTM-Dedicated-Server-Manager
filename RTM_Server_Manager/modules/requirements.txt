@@ -1,0 +1,6 @@
+PyQt5
+plyer
+requests==2.31.0
+psutil==6.1.0
+winshell
+pywin32
