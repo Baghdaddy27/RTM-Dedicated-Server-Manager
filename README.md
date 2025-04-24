@@ -1,4 +1,4 @@
-# Return to Moria Server Manager (RTM Server Manager)
+# Return to Moria Server Manager (RTM Server Manager) V1.0.2
 
 - [Click HERE to download the latest version of the application](https://github.com/Baghdaddy27/RTM-Dedicated-Server-Manager/releases)
 
@@ -30,38 +30,12 @@ This application automatically sets up SteamCMD, installs the dedicated server, 
 
 ### 1. Extract the Folder
 
-Download and extract the **RTM Server Manager** folder anywhere on your system.  
-The folder should contain:
+Download and extract the **RTM Server Manager** folder anywhere on your system. Preferably in your home directory or a place like My Documents, My Games, etc. Avoid placing this in the C: Drive since the permissions dont always work. 
 
-```
-RTM Server Manager/
-├── main.exe                  # The executable
-├── steamcmd.zip              # SteamCMD (auto-extracted on first run)
-├── settings.json             # Stores saved paths and notification settings
-├── .wm                       # (Optional) Welcome message, hidden file
-├── assets/
-│   └── RTMSM.png             # App branding image
-├── Default Files/
-│   ├── MoriaServerConfig.ini
-│   ├── MoriaServerPermissions.txt
-│   └── MoriaServerRules.txt
-├── logs/                     # Populated automatically during runtime
-```
-
----
 
 ### 2. First Launch
 
-Double-click `main.exe`. It may appear to “hang” for several minutes the first time — this is normal. It is:
-
-- Extracting SteamCMD
-- Downloading and installing the Return to Moria Dedicated Server
-- Setting up default config files
-
-This process can take 2–10 minutes depending on your internet speed.  
-Once setup is complete, the application will launch automatically.
-
----
+Double-click or run the appropriate start file (Start-Linux.sh or Start-Windows.bat) depending on your system. It will download the virtual python environment and then run the application. If the GUI doesn't appear, try running as an administrator (Windows). For linux, just make sure the script is executable. 
 
 ## USING THE APPLICATION
 
